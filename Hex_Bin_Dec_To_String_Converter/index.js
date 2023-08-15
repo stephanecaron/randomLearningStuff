@@ -1,6 +1,6 @@
 // binary to string
-const string = "48656c6c6f2c2048657821"
-const stringType = "Hexadecimal";
+const string = "072 101 108 108 111 044 032 119 111 114 108 100 033"
+const stringType = "Decimal";
 const cleanMap = new Map([
     ['Binary',  /[^01]/g],
     ['Hexadecimal', /[^0-9A-Fa-f]/g],
@@ -9,7 +9,7 @@ const cleanMap = new Map([
 const lengthMap = new Map([
     ['Binary', /.{1,8}/g],
     ['Hexadecimal', /.{2}/g],
-    ['Decimal', /.{1,1}/g]
+    ['Decimal', /.{3}/g]
 ]);
 const conversionMap = new Map([
     ['Binary', 2],
@@ -18,7 +18,7 @@ const conversionMap = new Map([
 ]);
 let encodedLetterArray = [];
 
-function cleanUpString(string, stringType) {
+function converter(string, stringType) {
     let cleanedString = string.replace(cleanMap.get(stringType),"").match(lengthMap.get(stringType));
     let letterArray = [];
     for (let i=0;i<cleanedString.length;i++) {
@@ -27,15 +27,5 @@ function cleanUpString(string, stringType) {
     return letterArray.join('')
 }
 
-function binaryToString(string) {
-    let binaryLetterArray = binaryString.split(' ');
-    let letterArray = [];
-    for (let i=0;i<binaryLetterArray.length;i++) {
-        let binaryNumber = parseInt(binaryLetterArray[i], 2);
-        let convertedLetter = String.fromCharCode(binaryNumber);
-        letterArray.push(convertedLetter);
-    }
-    return letterArray.join('');
-}
 
-console.log(cleanUpString(string, stringType));
+console.log(converter(string, stringType));
