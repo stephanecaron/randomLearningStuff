@@ -41,11 +41,13 @@ const ac = 18;
 const abilityScore = 16;
 const weaponType = "Greataxe";
 const proficiencyLevel = 3;
+const damageModifier = 0;
+const advantage = 1; // 0 = normal, 1 = advantage, 2 = disadvantage
+// autocalculates
 const statModifier = (abilityScore-10)/2;
 const proficiencyBonus = 1+ Math.floor((proficiencyLevel-1)/4)
 const numberOfHits = (weaponDamageMap.get(weaponType))[0]
 const weaponDamage = weaponDamageMap.get(weaponType).split('d')[1]
-const damageModifier = 0;
 
 console.log('Attacking target with a ' + weaponType + ' (' + weaponDamageMap.get(weaponType) + ')')
 
@@ -53,8 +55,14 @@ function diceRoll(max) {
     return Math.floor(Math.random()*max)+1
 }
 
-function hitCalc(ac, statModifier, proficiencyBonus) {
-    let roll = diceRoll(20)
+function advantageCalc(advantage, max) {
+    if (advantage === 0) return diceRoll(max)
+    if (advantage === 1) return Math.max(diceRoll(max),diceRoll(max))
+    if (advantage === 2) return Math.min(diceRoll(max),diceRoll(max))
+}
+
+function hitCalc(ac, statModifier, proficiencyBonus, advantage) {
+    let roll = advantageCalc(advantage,20)
     if (roll === 1) {
         console.log('Critical Miss :(')
         return "Miss"
@@ -81,11 +89,11 @@ function damageCalc(numberOfHits, weaponDamage, statModifier, damageModifier) {
     return instanceDamage
  }
 
-function attack(ac, statModifier, proficiencyBonus, numberOfHits, weaponDamage, damageModifier) {
-    let hitType = hitCalc(ac, statModifier, proficiencyBonus)
+function attack(ac, statModifier, proficiencyBonus, advantage, numberOfHits, weaponDamage, damageModifier) {
+    let hitType = hitCalc(ac, statModifier, proficiencyBonus, advantage)
     if (hitType === "Miss") return 0
     if (hitType === "Hit") return damageCalc(numberOfHits, weaponDamage, statModifier, damageModifier)
     if (hitType === "Critical Hit") return (damageCalc(numberOfHits, weaponDamage, statModifier, damageModifier)+damageCalc(numberOfHits, weaponDamage, statModifier, damageModifier))
 }
 
-console.log(attack(ac, statModifier, proficiencyBonus, numberOfHits, weaponDamage, damageModifier) + ' Damage dealt')
+console.log(attack(ac, statModifier, proficiencyBonus, advantage, numberOfHits, weaponDamage, damageModifier) + ' Damage dealt')
