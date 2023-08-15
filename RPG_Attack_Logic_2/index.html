@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DND Attack Roll</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+  <h1>DND Attack Roll</h1>
+     <div class="input-group">
+         <label for="ac">AC (Armor Class):</label>
+        <input type="number" id="acInput"><br>
+    </div>
+    <div class="input-group">
+        <label for="abilityScore">Ability score:</label>
+         <input type="number" id="abilityScoreInput"><br>
+    </div>
+<div class="input-group">
+  <label for="proficiencyLevel">Proficiency Level:</label>
+  <input type="number" id="proficiencyLevelInput"><br>
+</div>
+<div class="advantage-group">
+  <label>Advantage:</label>
+  <div class="radio-group">
+  <input type="radio" id="neutralAdvantage" name="advantage" value="0" checked>
+  <label for="neutralAdvantage">Neutral</label>
+  <input type="radio" id="advantageAdvantage" name="advantage" value="1">
+  <label for="advantageAdvantage">Advantage</label>
+  <input type="radio" id="disadvantageAdvantage" name="advantage" value="2">
+  <label for="disadvantageAdvantage">Disadvantage</label><br>
+</div></div>
+<div class="input-group">
+  <label for="weaponType">Weapon Type:</label>
+  <select id="weaponTypeInput">
+    <option value="Club">Club</option>
+    <option value="Dagger">Dagger</option>
+    <option value="Greatclub">Greatclub</option>
+    <option value="Handaxe">Handaxe</option>
+    <option value="Javelin">Javelin</option>
+    <option value="Light Hammer">Light Hammer</option>
+    <option value="Mace">Mace</option>
+    <option value="Quarterstaff">Quarterstaff</option>
+    <option value="Sickle">Sickle</option>
+    <option value="Spear">Spear</option>
+    <option value="Battleaxe">Battleaxe</option>
+    <option value="Flail">Flail</option>
+    <option value="Glaive">Glaive</option>
+    <option value="Greataxe">Greataxe</option>
+    <option value="Greatsword">Greatsword</option>
+    <option value="Halberd">Halberd</option>
+    <option value="Lance">Lance</option>
+    <option value="Longsword">Longsword</option>
+    <option value="Maul">Maul</option>
+    <option value="Morningstar">Morningstar</option>
+    <option value="Pike">Pike</option>
+    <option value="Rapier">Rapier</option>
+    <option value="Scimitar">Scimitar</option>
+    <option value="Shortsword">Shortsword</option>
+    <option value="Trident">Trident</option>
+    <option value="War Pick">War Pick</option>
+    <option value="Warhammer">Warhammer</option>
+    <option value="Whip">Whip</option>
+    <option value="Crossbow, Hand">Crossbow, Hand</option>
+    <option value="Crossbow, Heavy">Crossbow, Heavy</option>
+    <option value="Longbow">Longbow</option>
+  </select></div>
+  <br>
+  <div class="input-group">
+  <label for="damageModifier">Damage Modifier:</label>
+  <input type="number" id="damageModifierInput"><br>
+</div>
+  <button class="button" onclick="performAttack()">Perform Attack</button>
+</div>
+
+  <div id="resultArea" class="result"></div>
+
+  <script src="index.js"></script>
+  <script>
+    function performAttack() {
+      var ac = parseInt(document.getElementById("acInput").value);
+      var abilityScore = parseInt(document.getElementById("abilityScoreInput").value);
+      var proficiencyLevel = parseInt(document.getElementById("proficiencyLevelInput").value);
+      var advantageInputs = document.getElementsByName("advantage");
+      var selectedAdvantage;
+      for (var i = 0; i < advantageInputs.length; i++) {
+        if (advantageInputs[i].checked) {
+          selectedAdvantage = parseInt(advantageInputs[i].value);
+          break;
+        }
+      }
+      var weaponType = document.getElementById("weaponTypeInput").value;
+      var damageModifier = parseInt(document.getElementById("damageModifierInput").value);
+
+      // Call the attack function with input values
+      var attackResult = attack(ac, abilityScore, proficiencyLevel, advantage, weaponType, damageModifier);
+      //console.log('Hit type', hitType);
+        var resultArea = document.getElementById("resultArea");
+      resultArea.textContent = "Attack result: " + attackResult;
+    
+    }
+  </script>
+</body>
+</html>
