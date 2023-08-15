@@ -1,6 +1,6 @@
 // exercise create a hit/miss/damage roll calculator for a DND'esc MELEE attack
 // step 2 is add an advantage/disadvantage roll
-// step 4 add ranged/spell attacks
+// step 3 add ranged/spell attacks
 
 
 const weaponDamageMap = new Map([
@@ -39,10 +39,7 @@ const weaponDamageMap = new Map([
 
 const ac = 18;
 const abilityScore = 16;
-const advantageFlag = 0;
-const disadvantageFlag = 0;
 const weaponType = "Greataxe";
-//const attackType = "Melee";
 const proficiencyLevel = 3;
 const statModifier = (abilityScore-10)/2;
 const proficiencyBonus = 1+ Math.floor((proficiencyLevel-1)/4)
@@ -58,7 +55,6 @@ function diceRoll(max) {
 
 function hitCalc(ac, statModifier, proficiencyBonus) {
     let roll = diceRoll(20)
-    //console.log('1d20 roll : ' + roll)
     if (roll === 1) {
         console.log('Critical Miss :(')
         return "Miss"
@@ -93,5 +89,3 @@ function attack(ac, statModifier, proficiencyBonus, numberOfHits, weaponDamage, 
 }
 
 console.log(attack(ac, statModifier, proficiencyBonus, numberOfHits, weaponDamage, damageModifier) + ' Damage dealt')
-//console.log(hitCalc(ac, statModifier, proficiencyBonus))
-// function advantageHit() function disadvantageHit()
