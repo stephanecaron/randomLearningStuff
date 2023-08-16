@@ -37,8 +37,6 @@ async function logCleanedDamage(desiredMoveName) {
   }
 }
 
-// Example usage
-
 async function baba(desiredMoveName) {
     let fullDamageArray = [];
     
