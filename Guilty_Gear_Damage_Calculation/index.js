@@ -65,18 +65,17 @@ async function baba(desiredMoveName) {
 }
 console.log(fullDamageArray);
 let cumulativeDamage = 0;
-let cumulativeProration = 1;
 let assumedProrationFalloff = 0.10;
 let initialProration = 0.7;
 for (let i=0; i < fullDamageArray.length;i++) {
     if (i === 0) {
-        cumulativeDamage += Math.floor((fullDamageArray[i] * cumulativeProration));
-        console.log('Hit #' + i + ' dealt ' + Math.floor((fullDamageArray[i] * cumulativeProration)) + ' Damage')
+        cumulativeDamage += Math.floor((fullDamageArray[i]));
+        console.log('Hit #' + i + ' dealt ' +fullDamageArray[i] + ' Damage')
     }
     else {
-        cumulativeDamage += Math.floor(fullDamageArray[i] * Math.pow((cumulativeProration - assumedProrationFalloff),i) * initialProration);
-        console.log('Cummulative proration is at ' + Math.pow((cumulativeProration - assumedProrationFalloff),i))
-        console.log('Hit #' + i + ' dealt ' + Math.floor(fullDamageArray[i] * Math.pow((cumulativeProration - assumedProrationFalloff),i) * initialProration) + ' Damage')
+        cumulativeDamage += Math.floor(fullDamageArray[i] * Math.pow((1 - assumedProrationFalloff),i) * initialProration);
+        console.log('Cummulative proration is at ' + Math.pow((1 - assumedProrationFalloff),i))
+        console.log('Hit #' + i + ' dealt ' + Math.floor(fullDamageArray[i] * Math.pow((1 - assumedProrationFalloff),i) * initialProration) + ' Damage')
     }
     //if (cumulativeProration>=0.2) cumulativeProration -= assumedProrationFalloff
 }
