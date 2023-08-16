@@ -1,4 +1,4 @@
-const { moveFetch } = require('./moveFetch.js');
+const { moveFetch, moveList } = require('./moveFetch.js');
 
 async function getDamageRawForMove(desiredMoveName) {
   try {
@@ -12,6 +12,21 @@ async function getDamageRawForMove(desiredMoveName) {
     throw error;
   }
 }
+
+async function getMoveList(character_id) {
+    try {
+      const rows = await moveList(character_id);
+      console.log(rows);
+      if (rows.length > 0) {
+        console.log(rows[0].moveName)
+        return rows[0].moveName;
+      } else {
+        throw new Error(`${character_id} not found.`);
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
 
 async function logCleanedDamage(desiredMoveName) {
   try {
@@ -52,12 +67,24 @@ console.log(fullDamageArray);
 let cumulativeDamage = 0;
 let cumulativeProration = 1;
 let assumedProrationFalloff = 0.10;
+let initialProration = 0.7;
 for (let i=0; i < fullDamageArray.length;i++) {
-    cumulativeDamage += (fullDamageArray[i] * cumulativeProration);
-    cumulativeProration -= assumedProrationFalloff
+    if (i === 0) {
+        cumulativeDamage += Math.floor((fullDamageArray[i] * cumulativeProration));
+        console.log('Hit #' + i + ' dealt ' + Math.floor((fullDamageArray[i] * cumulativeProration)) + ' Damage')
+    }
+    else {
+        cumulativeDamage += Math.floor(fullDamageArray[i] * Math.pow((cumulativeProration - assumedProrationFalloff),i) * initialProration);
+        console.log('Cummulative proration is at ' + Math.pow((cumulativeProration - assumedProrationFalloff),i))
+        console.log('Hit #' + i + ' dealt ' + Math.floor(fullDamageArray[i] * Math.pow((cumulativeProration - assumedProrationFalloff),i) * initialProration) + ' Damage')
+    }
+    //if (cumulativeProration>=0.2) cumulativeProration -= assumedProrationFalloff
 }
-console.log('The expected combo damage is : ' + cumulativeDamage)
+console.log('For the combo : ' + combo)
+console.log('The expected combo damage is : ' + (cumulativeDamage))
 }
 
-const combo = ["Bandit Bringer", "Bandit Bringer", "Fafnir", "Bandit Bringer", "2HS", "JD", "JD", "Fafnir", "Bandit Revolver"];
+const combo = ["2K", "c.S", "6K", "2K", "2D", "Split Ciel"];
 baba(combo);
+
+//getMoveList(7);
