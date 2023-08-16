@@ -1,4 +1,4 @@
-const { moveFetch, moveList } = require('./moveFetch.js');
+const { moveFetch, moveList, moveFullData } = require('./moveFetch.js');
 
 async function getDamageRawForMove(desiredMoveName) {
   try {
@@ -28,6 +28,22 @@ async function getMoveList(character_id) {
     }
   }
 
+  async function getFullDataOnMove(moveName) {
+    try {
+      const rows = await moveFullData(moveName);
+      console.log(rows);
+      if (rows.length > 0) {
+        console.log(rows[0].moveName)
+        return rows[0].moveName;
+      } else {
+        throw new Error(`${moveName} not found.`);
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
 async function logCleanedDamage(desiredMoveName) {
   try {
     const damageRaw = await getDamageRawForMove(desiredMoveName);
@@ -54,7 +70,6 @@ async function logCleanedDamage(desiredMoveName) {
 
 async function baba(desiredMoveName) {
     let fullDamageArray = [];
-    
     for (let i = 0; i < desiredMoveName.length; i++) {
         //console.log('seeking damage for ' + desiredMoveName[i]);
         let cleanedDamage = await logCleanedDamage(desiredMoveName[i]);
@@ -65,12 +80,14 @@ async function baba(desiredMoveName) {
 }
 console.log(fullDamageArray);
 let cumulativeDamage = 0;
+let isCH = 1;
 let assumedProrationFalloff = 0.10;
-let initialProration = 0.7;
+let initialProration = 0.8;
 for (let i=0; i < fullDamageArray.length;i++) {
     if (i === 0) {
         cumulativeDamage += Math.floor((fullDamageArray[i]));
-        console.log('Hit #' + i + ' dealt ' +fullDamageArray[i] + ' Damage')
+        //if (isCH === 1) cumulativeDamage = Math.floor(cumulativeDamage*1.15)
+        console.log('Hit #' + i + ' dealt ' + cumulativeDamage + ' Damage')
     }
     else {
         cumulativeDamage += Math.floor(fullDamageArray[i] * Math.pow((1 - assumedProrationFalloff),i) * initialProration);
@@ -83,7 +100,11 @@ console.log('For the combo : ' + combo)
 console.log('The expected combo damage is : ' + (cumulativeDamage))
 }
 
-const combo = ["2K", "c.S", "6K", "2K", "2D", "Split Ciel"];
-baba(combo);
+//const combo = ["6HS", "6P", "2S", "Axl Bomber", "5K","2S","Axl Bomber", "5K","2S","Axl Bomber"];
+//baba(combo);
 
 //getMoveList(7);
+
+//getCharacterList();
+
+getFullDataOnMove("Axl Bomber")
